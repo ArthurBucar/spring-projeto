@@ -1,4 +1,4 @@
-package entidade;
+package spring.entidade;
 
 import java.io.Serializable;
 
@@ -19,6 +19,18 @@ public class Pessoa implements Serializable {
 	private String nome;
 	
 	private String sobrenome;
+
+	private int idade;
+	
+	
+	
+	public int getIdade() {
+		return idade;
+	}
+
+	public void setIdade(int idade) {
+		this.idade = idade;
+	}
 
 	public Long getId() {
 		return id;
