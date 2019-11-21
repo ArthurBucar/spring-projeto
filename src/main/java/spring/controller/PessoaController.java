@@ -53,9 +53,9 @@ public class PessoaController {
 	}
 	
 	
-	@GetMapping("/editarpessoa/{idpessoa}")
+	@GetMapping("/editarpessoa/{idpessoa}") //mapeou a url criada no html
 	public ModelAndView editar(@PathVariable("idpessoa") Long idpessoa) {
-		//carrega o objeto do banco de dados
+		//carrega/consulta o objeto do banco de dados
 		Optional<Pessoa> pessoa = pessoaRepository.findById(idpessoa);
 		
 		//prepara o retorno do modo envio para a mesma tela
@@ -63,6 +63,21 @@ public class PessoaController {
 		
 		//prepara o objeto para edição
 		modelAndView.addObject("pessoaobj", pessoa.get());
+		
+		return modelAndView;
+	}
+	
+	@GetMapping("/removerpessoa/{idpessoa}") //mapeou a url criada no html
+	public ModelAndView excluir(@PathVariable("idpessoa") Long idpessoa) {//pathvariable recebe o valor do pessoa.id
+		//carrega/consulta o objeto do banco de dados
+		pessoaRepository.deleteById(idpessoa);
+		
+		//prepara o retorno do modo envio para a mesma tela
+		ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
+		
+		//prepara o objeto para edição
+		modelAndView.addObject("pessoas", pessoaRepository.findAll());
+		modelAndView.addObject("pessoaobj", new Pessoa());
 		
 		return modelAndView;
 	}
