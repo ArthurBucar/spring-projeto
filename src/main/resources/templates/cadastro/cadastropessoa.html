@@ -7,19 +7,21 @@
 	<!--Import Google Icon Font-->
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <!--Import materialize.css-->
-      <link type="text/css" rel="stylesheet" href="materialize/css/materialize.css"  media="screen,projection"/>
-      <link type="text/css" rel="stylesheet" href="materialize/css/materialize.min.css"  media="screen,projection"/>
+      <link type="text/css" rel="stylesheet" href="/materialize/css/materialize.css"  media="screen,projection"/>
+      <link type="text/css" rel="stylesheet" href="/materialize/css/materialize.min.css"  media="screen,projection"/>
 </head>
 <body>
 	<h1>Cadastro de pessoas</h1>
 	
-	<form action="salvarpessoa" method="post">
+	<form action="salvarpessoa" method="post" th:object="${pessoaobj}">
+		<label>ID</label>
+		<input name="id" th:field="*{id}" readonly="true"/>
 		<label>Nome</label>
-		<input name="nome" />
+		<input name="nome" th:field="*{nome}" />
 		<label>Sobrenome</label>
-		<input name="sobrenome" />
+		<input name="sobrenome" th:field="*{sobrenome}" />
 		<label>Idade</label>
-		<input name="idade" />
+		<input name="idade" th:field="*{idade}" />
 		<input class="waves-effect waves-light btn" type="submit" value="Salvar">
 	</form>
 	
@@ -30,11 +32,12 @@
 			<td th:text = "${pessoa.id}"></td>
 			<td th:text = "${pessoa.nome}"></td>
 			<td th:text = "${pessoa.sobrenome}"></td>
+			<td><a th:href="@{/editarpessoa/{idpessoa}(idpessoa=${pessoa.id})}">Editar</a></td>
 		</tr>
 	</table>
 	
 	
-<script type="text/javascript" src="materialize/js/materialize.js"></script>
-<script type="text/javascript" src="materialize/js/materialize.min.js"></script>
+<script type="text/javascript" src="/materialize/js/materialize.js"></script>
+<script type="text/javascript" src="/materialize/js/materialize.min.js"></script>
 </body>
 </html>
