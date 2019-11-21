@@ -1,11 +1,13 @@
 package spring.entidade;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Pessoa implements Serializable {
@@ -22,8 +24,22 @@ public class Pessoa implements Serializable {
 
 	private int idade;
 	
+	@OneToMany(mappedBy = "pessoa")
+	private List<Telefone> telefones;
 	
 	
+	
+	
+	
+	
+	public List<Telefone> getTelefones() {
+		return telefones;
+	}
+
+	public void setTelefones(List<Telefone> telefones) {
+		this.telefones = telefones;
+	}
+
 	public int getIdade() {
 		return idade;
 	}
