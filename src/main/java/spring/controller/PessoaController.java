@@ -13,13 +13,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import spring.entidade.Pessoa;
+import spring.entidade.Telefone;
 import spring.repository.PessoaRepository;
+import spring.repository.TelefoneRepository;
 
 @Controller
 public class PessoaController {
 	
 	@Autowired
 	private PessoaRepository pessoaRepository;
+	
+	@Autowired
+	private TelefoneRepository telefoneRepository;
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/cadastropessoa")
 	public ModelAndView inicio() {
@@ -112,6 +117,21 @@ public class PessoaController {
 		//prepara o objeto para edição
 		modelAndView.addObject("pessoaobj", pessoa.get());
 		
+		return modelAndView;
+	}
+	
+	//intercepta a url, ignora o que vem antes e pega o parametro
+	@PostMapping("**/addfonepessoa/{pessoaid}")
+	public ModelAndView addFonePessoa(Telefone telefone, @PathVariable("pessoaid") Long pessoaid) {//pega os dados do formulario, pega o pathvariable para pegar o id da pessoa
+		
+		Pessoa pessoa = pessoaRepository.findById(pessoaid).get();
+		telefone.setPessoa(pessoa);
+		telefoneRepository.save(telefone);
+		
+		//retorna para a tela de telefones após a execução.
+		ModelAndView modelAndView = new ModelAndView("cadastro/telefones");
+		//precisa do objeto pai sendo mostrado, para redirecionar e exibir na tela
+		modelAndView.addObject("pessoaobj", pessoa);
 		return modelAndView;
 	}
 	
