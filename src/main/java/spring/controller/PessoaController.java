@@ -140,5 +140,24 @@ public class PessoaController {
 		return modelAndView;
 	}
 	
+	@GetMapping("/removertelefone/{idtelefone}") //mapeou a url criada no html
+	public ModelAndView removertelefone(@PathVariable("idtelefone") Long idtelefone) {//pathvariable recebe o valor do pessoa.id
+		
+		Pessoa pessoa = telefoneRepository.findById(idtelefone).get().getPessoa();
+		
+		
+		telefoneRepository.deleteById(idtelefone);
+		
+		
+		ModelAndView modelAndView = new ModelAndView("cadastro/telefones");
+		
+		
+		modelAndView.addObject("pessoas", pessoaRepository.findAll());
+		modelAndView.addObject("pessoaobj", pessoa);
+		modelAndView.addObject("telefones", telefoneRepository.getTelefones(pessoa.getId()));
+		
+		return modelAndView;
+	}
+	
 
 }
