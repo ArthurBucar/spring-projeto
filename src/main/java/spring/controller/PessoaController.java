@@ -116,6 +116,8 @@ public class PessoaController {
 		
 		//prepara o objeto para edição
 		modelAndView.addObject("pessoaobj", pessoa.get());
+		modelAndView.addObject("telefones", telefoneRepository.getTelefones(idpessoa));
+		
 		
 		return modelAndView;
 	}
@@ -132,6 +134,9 @@ public class PessoaController {
 		ModelAndView modelAndView = new ModelAndView("cadastro/telefones");
 		//precisa do objeto pai sendo mostrado, para redirecionar e exibir na tela
 		modelAndView.addObject("pessoaobj", pessoa);
+		
+		//pega o objeto telefones e chama a query criado para tarzer do banco
+		modelAndView.addObject("telefones", telefoneRepository.getTelefones(pessoaid));
 		return modelAndView;
 	}
 	
