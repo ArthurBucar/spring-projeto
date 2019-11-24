@@ -150,16 +150,38 @@ public class PessoaController {
 	public ModelAndView addFonePessoa(Telefone telefone, @PathVariable("pessoaid") Long pessoaid) {//pega os dados do formulario, pega o pathvariable para pegar o id da pessoa
 		
 		Pessoa pessoa = pessoaRepository.findById(pessoaid).get();
+		
+		if(telefone != null && telefone.getNumero().isEmpty() || telefone.getTipo().isEmpty())  {
+			//retorna para a tela de telefones após a execução.
+			ModelAndView modelAndView = new ModelAndView("cadastro/telefones");
+			//precisa do objeto pai sendo mostrado, para redirecionar e exibir na tela
+			modelAndView.addObject("pessoaobj", pessoa);
+			//pega o objeto telefones e chama a query criado para tarzer do banco
+			modelAndView.addObject("telefones", telefoneRepository.getTelefones(pessoaid));
+			
+			List<String> msg = new ArrayList<String>();
+			if(telefone.getNumero().isEmpty()) {
+				msg.add("Numero deve ser informado.");
+			}
+			if(telefone.getTipo().isEmpty()) {
+				msg.add("Tipo deve ser informado.");
+			}
+			
+			modelAndView.addObject("msg", msg);
+			
+			return modelAndView;
+		}
+		//retorna para a tela de telefones após a execução.
+		ModelAndView modelAndView = new ModelAndView("cadastro/telefones");
+		
 		telefone.setPessoa(pessoa);
 		telefoneRepository.save(telefone);
 		
-		//retorna para a tela de telefones após a execução.
-		ModelAndView modelAndView = new ModelAndView("cadastro/telefones");
 		//precisa do objeto pai sendo mostrado, para redirecionar e exibir na tela
 		modelAndView.addObject("pessoaobj", pessoa);
-		
 		//pega o objeto telefones e chama a query criado para tarzer do banco
-		modelAndView.addObject("telefones", telefoneRepository.getTelefones(pessoaid));
+		modelAndView.addObject("telefones", telefoneRepository.getTelefones(pessoaid));	
+		
 		return modelAndView;
 	}
 	
