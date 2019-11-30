@@ -24,7 +24,9 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 </head>
 <body>
 	<h3>Spring Boot + Thymeleaf + Material Design Lite</h3><br/>
-	<h5>Cadastro de Pessoas</h5><br/>
+	
+	<fieldset>
+	<legend>Cadastro de Pessoas</legend>
 	<div class="row">
 	<br/>
 		<div th:each="m : ${msg}">
@@ -97,20 +99,35 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 			</div>
 		</form>
 	</div>
+	</fieldset>
 	<br/>
 	<br/>
+	
+	<fieldset>
+	<legend>Campo de Pesquisa</legend>
 	<div class="row">
 	<form action="pesquisarpessoa" method="POST" class="col s12">
 			<div class="row">
-				<div class="input-field col s12">
+				<div class="input-field col s6">
 					<label for="nomepesquisa" class="active">Pesquisa por nome:</label> 
-					<input id="nomepesquisa" name="nomepesquisa" class="validate"> 
+					<input id="nomepesquisa" name="nomepesquisa" class="validate">
+				</div>
+				<div class="input-field col s6">
+					<label for="pesqsexo" class="active">Pesquisa Sexo</label>
+					<select class="browser-default" name="pesqsexo" id="pesqsexo">
+						<option value="" disabled selected>Escolha uma opção</option>
+						<option value="MASCULINO" th:text="Masculino" />
+						<option value="FEMININO" th:text="Feminino"/>
+					</select>
+				</div>
+				<div class="input-field col s12">
 					<input type="submit" value="Buscar" class="waves-effect waves-light btn">
 					<a class="waves-effect waves-light btn" href="/listapessoas">Lista de pessoas</a>
 				</div>
 			</div>
 		</form>
 	</div>
+	</fieldset>
 	
 	<br/>
 	<table class="striped">
