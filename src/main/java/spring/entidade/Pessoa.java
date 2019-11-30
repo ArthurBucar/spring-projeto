@@ -39,6 +39,8 @@ public class Pessoa implements Serializable {
 	private String cidade;
 	private String uf;
 	
+	private String sexopessoa;
+	
 	@OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Telefone> telefones;
 	
@@ -126,6 +128,16 @@ public class Pessoa implements Serializable {
 	public void setUf(String uf) {
 		this.uf = uf;
 	}
+
+	public String getSexopessoa() {
+		return sexopessoa;
+	}
+
+	public void setSexopessoa(String sexopessoa) {
+		this.sexopessoa = sexopessoa;
+	}
+	
+	
 	
 	
 	
