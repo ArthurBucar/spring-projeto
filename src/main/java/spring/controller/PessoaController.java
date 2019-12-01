@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -223,9 +224,44 @@ public class PessoaController {
 	@GetMapping("**/pesquisarpessoa")
 	public void imprimePdf(@RequestParam("nomepesquisa") String nomepesquisa,
 			@RequestParam("pesqsexo") String pesqsexo,
-			HttpServletRequest request, HttpServletRequest response) {
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		System.out.println("sauhsahusahuashu");
+		List<Pessoa> pessoas = new ArrayList<Pessoa>();
+		/*Busca por nome e sexo se for digitado*/
+		if(pesqsexo != null && !pesqsexo.isEmpty() && nomepesquisa != null && !nomepesquisa.isEmpty()) {
+			pessoas = pessoaRepository.findPessoaByNameSexo(nomepesquisa, pesqsexo);
+			
+		/*Pesquisa só por nome se for digitado*/	
+		}else if(nomepesquisa != null && !nomepesquisa.isEmpty()) {
+			pessoas = pessoaRepository.findPessoaByName(nomepesquisa);
+		/*se nao for digitado nada pega toda a lista*/
+		}else if(pesqsexo != null && !pesqsexo.isEmpty()) {
+			pessoas = pessoaRepository.findPessoaBySexo(pesqsexo);
+		/*se nao for digitado nada pega toda a lista*/	
+		}else {
+			Iterable<Pessoa> iterator = pessoaRepository.findAll();
+			for(Pessoa pessoa : iterator) {
+				pessoas.add(pessoa);
+			}
+		}
+		
+		/*chamar o servico que faz a geração do relatorio*/
+		byte[] pdf = reportUtil.gerarRelatorio(pessoas, "pessoa", request.getServletContext());
+		
+		/*Tamanho da resposta*/
+		response.setContentLength(pdf.length);
+		
+		/*Definir na resposta o tipo de arquivo*/
+		response.setContentType("application/octet-stream");
+		
+		/*Definir o cabeçalho da resposta*/
+		String headerKey = "Content-Disposition";
+		String headerValue = String.format("attachment; filename=\"%s\"", "Relatorio.pdf");
+		
+		response.setHeader(headerKey, headerValue);
+		
+		/*Finaliza a resposta pro navegador*/
+		response.getOutputStream().write(pdf);
 		
 	}
 	
