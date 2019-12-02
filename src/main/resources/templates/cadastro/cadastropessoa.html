@@ -66,6 +66,15 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 				</div>
 			</div>
 			<div class="row" >
+				<div class="input-fiel col s6" sec:authorize="hasRole('ROLE_ADMIN')">
+					<label for="profissao" class="active">Profissão</label> 
+					<select class="browser-default" th:field="*{profissao}" id="profissao">
+						<option th:each = "p : ${profissoes}" th:value="${p.id}" th:text="${p.nome}">
+						
+					</select>
+				</div>
+			</div>
+			<div class="row" >
 				<div class="input-fiel col s6">
 					<label for="cep" class="active">Cep:</label> 
 					<input id="cep" name="cep" th:field="*{cep}" class="validade" />

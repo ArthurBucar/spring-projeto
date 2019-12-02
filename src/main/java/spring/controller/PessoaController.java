@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import spring.entidade.Pessoa;
 import spring.entidade.Telefone;
 import spring.repository.PessoaRepository;
+import spring.repository.ProfissaoRepository;
 import spring.repository.TelefoneRepository;
 
 @Controller
@@ -37,6 +38,9 @@ public class PessoaController {
 	@Autowired
 	private ReportUtil reportUtil;
 	
+	@Autowired
+	private ProfissaoRepository profissaoRepository;
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/cadastropessoa")
 	public ModelAndView inicio() {
 		
@@ -49,6 +53,7 @@ public class PessoaController {
 		//carrega lista de pessoas ao abrir a pagina
 		Iterable<Pessoa> pessoasIt = pessoaRepository.findAll();
 		modelAndView.addObject("pessoas", pessoasIt);
+		modelAndView.addObject("profissoes", profissaoRepository.findAll());
 		
 		return modelAndView;
 	}
@@ -69,6 +74,7 @@ public class PessoaController {
 				msg.add(objectError.getDefaultMessage()); //vem das anotações das validações feitas nas entidades.
 			}
 			modelAndView.addObject("msg", msg);
+			modelAndView.addObject("profissoes", profissaoRepository.findAll());
 			return modelAndView;
 		} 
 			pessoaRepository.save(pessoa);
@@ -105,7 +111,7 @@ public class PessoaController {
 		
 		//prepara o objeto para edição
 		modelAndView.addObject("pessoaobj", pessoa.get());
-		
+		modelAndView.addObject("profissoes", profissaoRepository.findAll());
 		return modelAndView;
 	}
 	
